@@ -1,5 +1,22 @@
-name: GKE get-credentials
-description: Configure authentication to GKE clusters.
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Get GKE Credentials
+description: |-
+  Google Kubernetes Engine (GKE) is a secured and managed Kubernetes service with 
+  four-way auto scaling and multi-cluster support. Use this action to authenticate to
+  a GKE cluster by generating an emphemeral kubeconfig that can be used with kubectl, helm etc.
 author: GoogleCloudPlatform
 
 inputs:
@@ -9,25 +26,30 @@ inputs:
       formatted private key which can be exported from the Cloud Console. The
       value can be raw or base64-encoded.
     required: false
+    
   name:
     description: |-
       Name of the cluster to get credentials for.
     required: true
+
   location:
     description: |-
       Location (Region/Zone) for the cluster.
     required: true
+
   project_id:
     description: |-
       Project id where the cluster is deployed.
     required: false
+
   use_auth_provider:
     description: |-
       Flag to use short lived OIDC token or GCP auth plugin in kubectl.
     required: false
+    
   use_internal_ip:
     description: |-
-      Flag to use the internal IP address of the cluster endpoint with private clusters.
+      Whether to use the internal IP address of the cluster endpoint.
     required: false
 
 runs:
