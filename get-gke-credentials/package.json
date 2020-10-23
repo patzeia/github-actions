@@ -1,5 +1,5 @@
 {
-  "name": "get-credentials-gke",
+  "name": "get-gke-credentials",
   "version": "0.1.0",
   "description": "Get short lived credentials to a GKE cluster",
   "main": "dist/index.js",
@@ -26,7 +26,7 @@
     "kubernetes",
     "GCP",
     "google cloud",
-    "Google Cloud Kubernetes Engine"
+    "Google Kubernetes Engine"
   ],
   "author": "GoogleCloudPlatform",
   "license": "Apache-2.0",
@@ -37,7 +37,7 @@
     "uuidv4": "^6.2.3"
   },
   "devDependencies": {
-    "@kubernetes/client-node": "^0.12.0",
+    "@kubernetes/client-node": "^0.12.2",
     "@types/chai": "^4.2.12",
     "@types/lodash": "^4.14.159",
     "@types/mocha": "^8.0.1",

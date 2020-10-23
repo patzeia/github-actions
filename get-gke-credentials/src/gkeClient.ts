@@ -21,6 +21,7 @@ import {
   Compute,
   UserRefreshClient,
 } from 'google-auth-library';
+import YAML from 'yaml';
 
 /**
  * Available options to create the client.
@@ -42,7 +43,7 @@ type ClientOptions = {
  */
 export class ClusterClient {
   readonly defaultEndpoint = 'https://container.googleapis.com/v1';
-  readonly userAgent = 'github-actions-get-credentials-gke/0.1.0';
+  readonly userAgent = 'github-actions-get-gke-credentials/0.1.0';
   readonly auth: GoogleAuth;
   readonly parent: string;
   authClient: JWT | Compute | UserRefreshClient | undefined;
@@ -160,29 +161,69 @@ export class ClusterClient {
         : cluster.data.endpoint;
     const auth =
       String(authProvider).toLowerCase() === 'true'
-        ? 'user: {auth-provider: {name: gcp}}'
-        : `user: {token: ${await this.getToken()}}`;
-    const kubeConfig = `apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority-data: ${cluster.data.masterAuth?.clusterCaCertificate}
-    server: https://${endpoint}
-  name: ${cluster.data.name}
-contexts:
-- context:
-    cluster: ${cluster.data.name}
-    user: ${cluster.data.name}
-  name: ${cluster.data.name}
-current-context: ${cluster.data.name}
-kind: Config
-preferences: {}
-users:
-- name: ${cluster.data.name}
-  ${auth}`;
-
-    return kubeConfig;
+        ? { user: { 'auth-provider': { name: 'gcp' } } }
+        : { user: { token: await this.getToken() } };
+    const kubeConfig: KubeConfig = {
+      'apiVersion': 'v1',
+      'clusters': [
+        {
+          cluster: {
+            'certificate-authority-data':
+              cluster.data.masterAuth?.clusterCaCertificate,
+            'server': `https://${endpoint}`,
+          },
+          name: cluster.data.name,
+        },
+      ],
+      'contexts': [
+        {
+          context: {
+            cluster: cluster.data.name,
+            user: cluster.data.name,
+          },
+          name: cluster.data.name,
+        },
+      ],
+      'kind': 'Config',
+      'current-context': cluster.data.name,
+      'users': [{ ...{ name: cluster.data.name }, ...auth }],
+    };
+    return YAML.stringify(kubeConfig);
   }
 }
+
+type cluster = {
+  cluster: {
+    'certificate-authority-data': string;
+    'server': string;
+  };
+  name: string;
+};
+
+type context = {
+  context: {
+    cluster: string;
+    user: string;
+  };
+  name: string;
+};
+
+export type KubeConfig = {
+  'apiVersion': string;
+  'clusters': cluster[];
+  'contexts': context[];
+  'current-context': string;
+  'kind': string;
+  'users': [
+    {
+      name: string;
+      user: {
+        'token'?: string;
+        'auth-provider'?: { name: string };
+      };
+    },
+  ];
+};
 
 export type ClusterResponse = {
   data: {

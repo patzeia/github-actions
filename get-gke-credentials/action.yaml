@@ -39,17 +39,17 @@ inputs:
 
   project_id:
     description: |-
-      Project id where the cluster is deployed.
+      Project ID where the cluster is deployed.
     required: false
 
   use_auth_provider:
     description: |-
-      Flag to use short lived OIDC token or GCP auth plugin in kubectl.
+      Flag to use GCP auth plugin in kubectl instead of a short lived token. Defaults to false.
     required: false
     
   use_internal_ip:
     description: |-
-      Whether to use the internal IP address of the cluster endpoint.
+      Flag to use the internal IP address of the cluster endpoint (for use with Private GKE clusters).
     required: false
 
 runs:

@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-# get-credentials-gke
+# get-gke-credentials
 
-This action allows configuring authentication to a [GKE cluster][gke] via a `kubeconfig` file that can be used with `kubctl` or other methods of interacting with the cluster.
+This action configures authentication to a [GKE cluster][gke] via a `kubeconfig` file that can be used with `kubectl` or other methods of interacting with the cluster.
 
 Authentication is performed by generating a [short-lived token][token] (default behaviour) or via the [GCP auth plugin][gcp-auth-plugin] present in `kubectl` which uses the service account keyfile path in [GOOGLE_APPLICATION_CREDENTIALS][gcp-gcloud-auth].
 
@@ -32,7 +32,7 @@ This action requires:
 ```yaml
 steps:
 - id: get-credentials
-  uses: GoogleCloudPlatform/github-actions/get-credentials-gke@master
+  uses: GoogleCloudPlatform/github-actions/get-gke-credentials@master
   with:
     name: my-cluster
     location: us-central1-a
@@ -57,7 +57,7 @@ steps:
 - `project_id`: (Optional) Project id where the cluster is deployed. If provided, this
   will override the project configured by gcloud.
 
-- `use_auth_provider`: (Optional) Flag to use short lived token or GCP auth plugin in kubectl. Defaults to using false and uses the short lived token.
+- `use_auth_provider`: (Optional) Flag to use GCP auth plugin in kubectl instead of a short lived token. Defaults to false.
 
 - `use_internal_ip`: (Optional) Flag to use the internal IP address of the cluster endpoint with private clusters. Defaults to false.
 
@@ -83,7 +83,7 @@ action:
 
 ```yaml
 - id: get-credentials
-  uses: GoogleCloudPlatform/github-actions/get-credentials-gke@master
+  uses: GoogleCloudPlatform/github-actions/get-gke-credentials@master
   with:
     name: my-cluster
     location: us-central1-a
@@ -99,7 +99,7 @@ only works using a custom runner hosted on GCP.**
 
 ```yaml
 - id: get-credentials
-  uses: GoogleCloudPlatform/github-actions/get-credentials-gke@master
+  uses: GoogleCloudPlatform/github-actions/get-gke-credentials@master
   with:
     name: my-cluster
     location: us-central1-a
