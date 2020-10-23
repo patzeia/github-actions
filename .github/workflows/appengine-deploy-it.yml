@@ -32,8 +32,7 @@ jobs:
         });
         server.listen(process.env.PORT || 8080);
         EOF
-    - id: build dependency
-      name: Build dependency
+    - name: Build dependency
       working-directory: setupGcloudSDK
       run: |-
         npm install
@@ -51,6 +50,13 @@ jobs:
         project_id: ${{ secrets.APPENGINE_DEPLOY_PROJECT_ID }}
         deliverables: ${{ github.workspace }}/app.yaml
         version: gcloud
+    - name: Check Output URL
+      run: |-
+        if [[ "${{ steps.deploy.outputs.url }}" =~ "appspot.com"$ ]]; then
+          echo "App Engine URL found."
+        else
+          exit 1
+        fi
     - name: Test Output
       run: |-
         curl '${{ steps.deploy.outputs.url }}' \
@@ -82,8 +88,7 @@ jobs:
         });
         server.listen(process.env.PORT || 8080);
         EOF
-    - id: build dependency
-      name: Build dependency
+    - name: Build dependency
       working-directory: setupGcloudSDK
       run: |-
         npm install
@@ -102,6 +107,13 @@ jobs:
         deliverables: ${{ github.workspace }}/app.yaml
         version: b64-json
         promote: false # Allows for deletion
+    - name: Check Output URL
+      run: |-
+        if [[ "${{ steps.deploy.outputs.url }}" =~ "appspot.com"$ ]]; then
+          echo "App Engine URL found."
+        else
+          exit 1
+        fi
     - name: Test Output
       run: |-
         curl '${{ steps.deploy.outputs.url }}' \
@@ -135,8 +147,7 @@ jobs:
         });
         server.listen(process.env.PORT || 8080);
         EOF
-    - id: build dependency
-      name: Build dependency
+    - name: Build dependency
       working-directory: setupGcloudSDK
       run: |-
         npm install
@@ -155,6 +166,13 @@ jobs:
         deliverables: ${{ github.workspace }}/app.yaml
         version: json
         promote: false # Allows for deletion
+    - name: Check Output URL
+      run: |-
+        if [[ "${{ steps.deploy.outputs.url }}" =~ "appspot.com"$ ]]; then
+          echo "App Engine URL found."
+        else
+          exit 1
+        fi
     - name: Test Output
       run: |-
         curl '${{ steps.deploy.outputs.url }}' \
