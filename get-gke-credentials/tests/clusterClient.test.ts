@@ -3,10 +3,10 @@ import 'mocha';
 import { JWT } from 'google-auth-library';
 import YAML from 'yaml';
 
-const credentials = process.env.GKE_AUTH_SA_KEY_JSON;
-const project = process.env.GKE_AUTH_PROJECT_ID;
-const name = process.env.GKE_AUTH_CLUSTER_NAME;
-const location = process.env.GKE_AUTH_CLUSTER_LOCATION || 'us-central1-c';
+const credentials = process.env.GET_GKE_CRED_SA_KEY_JSON;
+const project = process.env.GET_GKE_CRED_PROJECT;
+const name = process.env.GET_GKE_CRED_CLUSTER_NAME;
+const location = process.env.GKE_AUTH_CLUSTER_LOCATION || 'us-central1-a';
 
 const publicCluster: ClusterResponse = {
   data: {
